@@ -1,9 +1,17 @@
-import sqlite3
+import os
 
-conn = sqlite3.connect("messages.db")
+import pymysql
 
-conn.execute("""CREATE TABLE messages
+conn = pymysql.connect(host=os.environ['CLOUDSQL_CONNECTION_NAME'],
+                       user=os.environ['CLOUDSQL_USER'],
+                       password=os.environ['CLOUDSQL_PASSWORD'],
+                       db=os.environ['CLOUDSQL_DATABASE'],
+                       charset='utf8mb4',
+                       cursorclass=pymysql.cursors.DictCursor)
+
+conn.cursor().execute("""CREATE TABLE `messages`
                 (
-                id int,
-                content varchar(255)
+                `id` int(11) ,
+                `content` varchar(255),
+                PRIMARY KEY (`id`)
                 );""")

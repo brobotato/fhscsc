@@ -1,14 +1,14 @@
 # FHS CSC
 
-Website for the FHS Computer Science Club using CherryPy, SQLite3, JQuery, and Bootstrap I guess.
+Website for the FHS Computer Science Club using CherryPy, PyMySQL, JQuery, and Bootstrap running on the Google App Engine.
 
 ## Overview
 
-WIP
+WIP, Rquires a Google App Engine instance and a Google Cloud SQL instance.
 
 ## Requirements
 
-FHS CSC requires a fairly recent installation of CherryPy and SQLite3.
+FHS CSC requires a fairly recent installation of CherryPy and PyMySQL.
 
 ## Setup
 

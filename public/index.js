@@ -3,8 +3,7 @@ $(document).ready(function() {
 var UpdateMessages = function() {
   $.getJSON("/submit", function(data) {
     $.each( data, function(index, val) {
-      console.log(val);
-      $("#message-" + (5-index).toString()).fadeOut(function() {
+      $("#message-" + (index+1).toString()).fadeOut(function() {
         $(this).text(val).fadeIn();
       });
     });

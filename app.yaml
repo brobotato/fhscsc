@@ -3,3 +3,9 @@ runtime: python37
 handlers:
 - url: /.*
   script: main.app
+
+env_variables:
+    CLOUDSQL_CONNECTION_NAME: your-connection-name
+    CLOUDSQL_USER: root
+    CLOUDSQL_PASSWORD: your-cloudsql-user-password
+    CLOUDSQL_DATABASE: your-database-name

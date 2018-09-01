@@ -38,11 +38,10 @@ conf = {
     }
 }
 
-db = 'messages.db'
-handler = SQLHandler(db)
+handler = SQLHandler()
 
 webapp = FHSCSC()
 webapp.submit = FHSCSCRequests()
-# Uncomment this line and comment out the 2 below if you're running locally
+# Uncomment this line and comment out the one below if you're running locally
 # cherrypy.quickstart(webapp, '/', conf)
 app = cherrypy.tree.mount(webapp, '/', conf)
