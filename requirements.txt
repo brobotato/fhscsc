@@ -1,2 +1,2 @@
 CherryPy==17.3.0
-google
+googleapis-common-protos==1.3.5
