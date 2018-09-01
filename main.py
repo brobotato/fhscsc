@@ -1,6 +1,7 @@
 import os.path
 
 import cherrypy
+from google.appengine.ext.webapp.util import run_wsgi_app
 
 from sqlhandler import SQLHandler
 
@@ -10,6 +11,7 @@ class FHSCSC(object):
     @cherrypy.expose
     def index(self):
         return open('public/index.html')
+
 
 @cherrypy.expose
 class FHSCSCRequests(object):
@@ -43,4 +45,7 @@ if __name__ == '__main__':
 
     webapp = FHSCSC()
     webapp.submit = FHSCSCRequests()
-    cherrypy.quickstart(webapp, '/', conf)
+    # Uncomment this line and comment out the 2 below if you're running locally
+    # cherrypy.quickstart(webapp, '/', conf)
+    app = cherrypy.tree.mount(FHSCSC(), '/', conf)
+    run_wsgi_app(app)
