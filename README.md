@@ -12,7 +12,7 @@ Bottled requires a fairly recent installation of CherryPy and SQLite3.
 
 ## Setup
 
-Run [setup.py](./bottled/setup.py).
+Run [setup.py](./setup.py).
 
 ## Get Started
 
