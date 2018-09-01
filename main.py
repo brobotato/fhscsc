@@ -45,4 +45,4 @@ webapp = FHSCSC()
 webapp.submit = FHSCSCRequests()
 # Uncomment this line and comment out the 2 below if you're running locally
 # cherrypy.quickstart(webapp, '/', conf)
-app = cherrypy.tree.mount(FHSCSC(), '/', conf)
+app = cherrypy.tree.mount(webapp, '/', conf)
