@@ -1,6 +1,7 @@
 import os.path
 
 import cherrypy
+# Comment out if local
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from sqlhandler import SQLHandler
