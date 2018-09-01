@@ -1,1 +1,1 @@
-cherrypy
+CherryPy==17.3.0
