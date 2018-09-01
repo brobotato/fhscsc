@@ -5,8 +5,6 @@ import cherrypy
 from sqlhandler import SQLHandler
 
 
-app = cherrypy(__name__)
-
 class FHSCSC(object):
 
     @cherrypy.expose
