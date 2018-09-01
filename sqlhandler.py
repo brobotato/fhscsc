@@ -9,10 +9,12 @@ import pymysql.cursors
 class SQLHandler(object):
     def __init__(self):
         self.insert_queue = queue.Queue(1)
+        ssl = {'cert': 'ssl/client-cert.pem', 'key': 'ssl/client-key.pem'}
         self.conn = pymysql.connect(host=os.environ['CLOUDSQL_CONNECTION_NAME'],
                                     user=os.environ['CLOUDSQL_USER'],
                                     password=os.environ['CLOUDSQL_PASSWORD'],
                                     db=os.environ['CLOUDSQL_DATABASE'],
+                                    ssl=ssl,
                                     charset='utf8mb4',
                                     cursorclass=pymysql.cursors.DictCursor)
 
