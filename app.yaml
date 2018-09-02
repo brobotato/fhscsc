@@ -5,7 +5,10 @@ handlers:
   script: main.app
 
 env_variables:
-    CLOUDSQL_CONNECTION_NAME: your-connection-name
+    CLOUDSQL_CONNECTION_NAME: your-cloudsql-instance-name
     CLOUDSQL_USER: root
-    CLOUDSQL_PASSWORD: your-cloudsql-user-password
-    CLOUDSQL_DATABASE: your-database-name
+    CLOUDSQL_PASSWORD: your-root-password
+    CLOUDSQL_DATABASE: your-db-name
+    
+beta_settings:
+    cloud_sql_instances: fhs-csc-website:us-west2:messages

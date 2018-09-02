@@ -5,23 +5,25 @@ import threading
 
 import pymysql.cursors
 
+CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
+CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
+CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
+CLOUDSQL_DATABASE = os.environ.get('CLOUDSQL_DATABASE')
 
 class SQLHandler(object):
     def __init__(self):
         self.insert_queue = queue.Queue(1)
-        ssl = {'cert': 'ssl/client-cert.pem', 'key': 'ssl/client-key.pem'}
-        self.conn = pymysql.connect(host=os.environ['CLOUDSQL_CONNECTION_NAME'],
-                                    user=os.environ['CLOUDSQL_USER'],
-                                    password=os.environ['CLOUDSQL_PASSWORD'],
-                                    db=os.environ['CLOUDSQL_DATABASE'],
-                                    ssl=ssl,
-                                    charset='utf8mb4',
-                                    cursorclass=pymysql.cursors.DictCursor)
+        self.conn = pymysql.connect(unix_socket=os.path.join('/cloudsql', CLOUDSQL_CONNECTION_NAME),
+						            user=CLOUDSQL_USER,
+						            passwd=CLOUDSQL_PASSWORD,
+						            db=CLOUDSQL_DATABASE)
+
 
     def select(self, queue):
         with self.conn.cursor() as cursor:
             cursor.execute("SELECT `content` FROM `messages` ORDER BY id DESC LIMIT 6")
             queue.put(cursor.fetchall())
+            cursor.close()
         return
 
     def threaded_select(self):
@@ -30,13 +32,14 @@ class SQLHandler(object):
         thread.start()
         thread.join()
         messages = result.get()
-        return json.dumps([message['content'] for message in messages])
+        return json.dumps([message[0] for message in messages])
 
     def insert(self, content):
         with self.conn.cursor() as cursor:
             length = cursor.execute("SELECT * FROM `messages`")
             cursor.execute("""INSERT INTO `messages` (`id`, `content`) 
                                  VALUES ({0}, "{1}")""".format(length, content))
+            cursor.close()
 
     def threaded_insert(self):
         item = self.insert_queue.get()
