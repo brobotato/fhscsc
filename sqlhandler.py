@@ -20,6 +20,7 @@ class SQLHandler(object):
                                         user=CLOUDSQL_USER,
                                         passwd=CLOUDSQL_PASSWORD,
                                         db=CLOUDSQL_DATABASE)
+            self.select_key = 0
         else:
             self.conn = pymysql.connect(host=CLOUDSQL_IP,
                                         user=CLOUDSQL_USER,
@@ -27,6 +28,7 @@ class SQLHandler(object):
                                         db=CLOUDSQL_DATABASE,
                                         charset='utf8mb4',
                                         cursorclass=pymysql.cursors.DictCursor)
+            self.select_key = 'content'
 
     def select(self, queue):
         with self.conn.cursor() as cursor:
@@ -41,7 +43,7 @@ class SQLHandler(object):
         thread.start()
         thread.join()
         messages = result.get()
-        return json.dumps([message[0] for message in messages])
+        return json.dumps([message[self.select_key] for message in messages])
 
     def insert(self, content):
         with self.conn.cursor() as cursor:
