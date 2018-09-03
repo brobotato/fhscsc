@@ -42,6 +42,7 @@ handler = SQLHandler()
 
 webapp = FHSCSC()
 webapp.submit = FHSCSCRequests()
-# Uncomment this line and comment out the one below if you're running locally
-# cherrypy.quickstart(webapp, '/', conf)
 app = cherrypy.tree.mount(webapp, '/', conf)
+
+if __name__ == "__main__":
+    cherrypy.quickstart(webapp, '/', conf)

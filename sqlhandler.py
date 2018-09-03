@@ -6,18 +6,27 @@ import threading
 import pymysql.cursors
 
 CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
+CLOUDSQL_IP = os.environ.get('CLOUDSQL_IP')
 CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
 CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 CLOUDSQL_DATABASE = os.environ.get('CLOUDSQL_DATABASE')
 
+
 class SQLHandler(object):
     def __init__(self):
         self.insert_queue = queue.Queue(1)
-        self.conn = pymysql.connect(unix_socket=os.path.join('/cloudsql', CLOUDSQL_CONNECTION_NAME),
-						            user=CLOUDSQL_USER,
-						            passwd=CLOUDSQL_PASSWORD,
-						            db=CLOUDSQL_DATABASE)
-
+        if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
+            self.conn = pymysql.connect(unix_socket=os.path.join('/cloudsql', CLOUDSQL_CONNECTION_NAME),
+                                        user=CLOUDSQL_USER,
+                                        passwd=CLOUDSQL_PASSWORD,
+                                        db=CLOUDSQL_DATABASE)
+        else:
+            self.conn = pymysql.connect(host=CLOUDSQL_IP,
+                                        user=CLOUDSQL_USER,
+                                        password=CLOUDSQL_PASSWORD,
+                                        db=CLOUDSQL_DATABASE,
+                                        charset='utf8mb4',
+                                        cursorclass=pymysql.cursors.DictCursor)
 
     def select(self, queue):
         with self.conn.cursor() as cursor:
@@ -38,7 +47,7 @@ class SQLHandler(object):
         with self.conn.cursor() as cursor:
             length = cursor.execute("SELECT * FROM `messages`")
             cursor.execute("""INSERT INTO `messages` (`id`, `content`) 
-                                 VALUES ({0}, "{1}")""".format(length, content))
+                                 VALUES (%s, %s)""", (length, content))
             cursor.close()
 
     def threaded_insert(self):
