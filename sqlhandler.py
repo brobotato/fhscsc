@@ -15,13 +15,7 @@ CLOUDSQL_DATABASE = os.environ.get('CLOUDSQL_DATABASE')
 class SQLHandler(object):
     def __init__(self):
         self.insert_queue = queue.Queue(1)
-        if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
-            self.conn = pymysql.connect(unix_socket=os.path.join('/cloudsql', CLOUDSQL_CONNECTION_NAME),
-                                        user=CLOUDSQL_USER,
-                                        passwd=CLOUDSQL_PASSWORD,
-                                        db=CLOUDSQL_DATABASE)
-            self.select_key = 0
-        else:
+        if __name__ == "__main__":
             self.conn = pymysql.connect(host=CLOUDSQL_IP,
                                         user=CLOUDSQL_USER,
                                         password=CLOUDSQL_PASSWORD,
@@ -29,6 +23,12 @@ class SQLHandler(object):
                                         charset='utf8mb4',
                                         cursorclass=pymysql.cursors.DictCursor)
             self.select_key = 'content'
+        else:
+            self.conn = pymysql.connect(unix_socket=os.path.join('/cloudsql', CLOUDSQL_CONNECTION_NAME),
+                                        user=CLOUDSQL_USER,
+                                        passwd=CLOUDSQL_PASSWORD,
+                                        db=CLOUDSQL_DATABASE)
+            self.select_key = 0
 
     def select(self, queue):
         with self.conn.cursor() as cursor:
