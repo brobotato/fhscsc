@@ -101,3 +101,8 @@ ENV/
 # Project specific
 
 messages.db
+
+
+# Prevent private app.yaml info from being pushed constantly
+
+app.yaml
