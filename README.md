@@ -17,3 +17,7 @@ Run [setup.py](./setup.py).
 ## Get Started
 
 Run [main.py](./main.py).
+
+## Credits
+
+[Landing Page Template by StartBootstrap](https://startbootstrap.com/template-overviews/landing-page/)
