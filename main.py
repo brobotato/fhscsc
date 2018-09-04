@@ -8,8 +8,12 @@ from sqlhandler import SQLHandler
 class FHSCSC(object):
 
     @cherrypy.expose
-    def index(self):
-        return open('public/index.html')
+    def index(self, email='default'):
+        if email == 'default':
+            return open('public/index.html')
+        else:
+            raise cherrypy.HTTPRedirect(
+                "https://docs.google.com/forms/d/e/1FAIpQLScHv_lWhVAl2Ev3U2eCoHGvB1OrV5_puzISj523RPtg3vFPfw/viewform?usp=pp_url&entry.1045781291=" + email)
 
 
 @cherrypy.expose

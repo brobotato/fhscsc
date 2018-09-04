@@ -15,7 +15,7 @@ CLOUDSQL_DATABASE = os.environ.get('CLOUDSQL_DATABASE')
 class SQLHandler(object):
     def __init__(self):
         self.insert_queue = queue.Queue(1)
-        if __name__ == "__main__":
+        if os.environ.get('GOOGLE_CLOUD_PROJECT', '') == '':
             self.conn = pymysql.connect(host=CLOUDSQL_IP,
                                         user=CLOUDSQL_USER,
                                         password=CLOUDSQL_PASSWORD,
